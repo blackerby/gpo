@@ -30,6 +30,9 @@ COLLECTIONS = {
 }
 API_KEY = os.environ.get("GPO_API_KEY", "DEMO_KEY")
 HEADERS = {"X-Api-Key": API_KEY}
+TITLE = "New/Updated Data from GPO"
+
+st.set_page_config(page_title=TITLE, layout="wide")
 
 
 def timestamp_from_date(date: date) -> str:
@@ -41,7 +44,7 @@ def timestamp_from_date(date: date) -> str:
 
 
 # Report starts here
-st.title("New/Updated Data from GPO")
+st.title(TITLE)
 
 collection_selection = st.selectbox("Choose a GPO collection", COLLECTIONS.keys())
 collection = COLLECTIONS[collection_selection]
@@ -59,7 +62,13 @@ data = response.json()
 packages = data["packages"]
 
 df = pd.DataFrame.from_records(packages)
+df["packageLink"] = df["packageLink"] + "?api_key=DEMO_KEY"
 
 st.header(collection_selection)
-st.dataframe(df, hide_index=True)
+st.dataframe(
+    df,
+    hide_index=True,
+    use_container_width=True,
+    column_config={"packageLink": st.column_config.LinkColumn()},
+)
 st.subheader(f"Total: {len(df)}")
