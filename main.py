@@ -62,14 +62,14 @@ data = response.json()
 packages = data["packages"]
 
 df = pd.DataFrame.from_records(packages)
+st.header(collection_selection)
 if len(df) > 0:
     df["packageLink"] = df["packageLink"] + "?api_key=DEMO_KEY"
 
-st.header(collection_selection)
-st.dataframe(
-    df,
-    hide_index=True,
-    use_container_width=True,
-    column_config={"packageLink": st.column_config.LinkColumn()},
-)
+    st.dataframe(
+        df,
+        hide_index=True,
+        use_container_width=True,
+        column_config={"packageLink": st.column_config.LinkColumn()},
+    )
 st.subheader(f"Total: {len(df)}")
