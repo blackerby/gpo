@@ -62,7 +62,8 @@ data = response.json()
 packages = data["packages"]
 
 df = pd.DataFrame.from_records(packages)
-df["packageLink"] = df["packageLink"] + "?api_key=DEMO_KEY"
+if len(df) > 0:
+    df["packageLink"] = df["packageLink"] + "?api_key=DEMO_KEY"
 
 st.header(collection_selection)
 st.dataframe(
