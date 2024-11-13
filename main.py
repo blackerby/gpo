@@ -73,3 +73,16 @@ if len(df) > 0:
         column_config={"packageLink": st.column_config.LinkColumn()},
     )
 st.subheader(f"Total: {len(df)}")
+
+if collection in ["cprt", "crpt"]:
+    house = len(df[df["docClass"].str.startswith("H")])
+    senate = len(df[df["docClass"].str.startswith("S")])
+    executive = len(df[df["docClass"].str.startswith("E")])
+
+    st.markdown(f"""
+        |Type|Count|
+        |---------|-----------|
+        |House    |{house}    |
+        |Senate   |{senate}   |
+        |Executive|{executive}|
+    """)
