@@ -1,8 +1,8 @@
 from datetime import date, datetime, timedelta, timezone
 import os
 
-import pandas as pd
-import requests
+import polars as pl
+import httpx
 import streamlit as st
 
 
@@ -57,14 +57,14 @@ end_date = st.date_input("End date", TOMORROW, format="YYYY-MM-DD")
 end_timestamp = timestamp_from_date(end_date)  # type: ignore
 
 url = f"{BASE_URL}/{collection}/{start_timestamp}/{end_timestamp}?congress={congress}&pageSize={PAGE_SIZE}&offsetMark={OFFSET_MARK}"
-response = requests.get(url, headers=HEADERS)
+response = httpx.get(url, headers=HEADERS)
 data = response.json()
 packages = data["packages"]
 
-df = pd.DataFrame.from_records(packages)
+df = pl.DataFrame(packages)
 st.header(collection_selection)
 if len(df) > 0:
-    df["packageLink"] = df["packageLink"] + "?api_key=DEMO_KEY"
+    df = df.with_columns(pl.concat_str([pl.col("packageLink"), pl.lit("?api_key=DEMO_KEY")]))
 
     st.dataframe(
         df,
@@ -76,9 +76,9 @@ st.subheader(f"Total: {len(df)}")
 
 if collection in ["cprt", "crpt"]:
     if "docClass" in df.columns:
-        house = len(df[df["docClass"].str.startswith("H")])
-        senate = len(df[df["docClass"].str.startswith("S")])
-        executive = len(df[df["docClass"].str.startswith("E")])
+        house = len(df.filter(pl.col("docClass").str.starts_with("H")))
+        senate = len(df.filter(pl.col("docClass").str.starts_with("S")))
+        executive = len(df.filter(pl.col("docClass").str.starts_with("E")))
 
         st.markdown(f"""
             |Type|Count|
