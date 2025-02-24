@@ -2,6 +2,7 @@ from datetime import date, datetime, timedelta, timezone
 import os
 
 import polars as pl
+import polars_capitol as cap
 import httpx
 import streamlit as st
 
@@ -66,11 +67,16 @@ st.header(collection_selection)
 if len(df) > 0:
     df = df.with_columns(pl.concat_str([pl.col("packageLink"), pl.lit("?api_key=DEMO_KEY")]))
 
+    if collection in ["bills", "crpt"]:
+        s = pl.col("packageId").str.split(by="-").list.get(1, null_on_oob=True)
+        expr = cap.cdg_url(s)
+        df = df.with_columns(cdg_url=expr).select(["packageId", "congress", "docClass", "lastModified", "title", "packageLink", "cdg_url"])
+
     st.dataframe(
         df,
         hide_index=True,
         use_container_width=True,
-        column_config={"packageLink": st.column_config.LinkColumn()},
+        column_config={"packageLink": st.column_config.LinkColumn(), "cdg_url": st.column_config.LinkColumn()},
     )
 st.subheader(f"Total: {len(df)}")
 

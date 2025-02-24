@@ -1,4 +1,5 @@
 version = 1
+revision = 1
 requires-python = ">=3.13"
 
 [[package]]
@@ -93,7 +94,7 @@ name = "click"
 version = "8.1.8"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "platform_system == 'Windows'" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/b9/2e/0090cbf739cee7d23781ad4b89a9894a41538e4fcf4c31dcdd705b78eb8b/click-8.1.8.tar.gz", hash = "sha256:ed53c9d8990d83c2a27deae68e4ee337473f6330c040a31d4225c9574d16096a", size = 226593 }
 wheels = [
@@ -140,6 +141,7 @@ source = { virtual = "." }
 dependencies = [
     { name = "httpx" },
     { name = "polars" },
+    { name = "polars-capitol" },
     { name = "streamlit" },
 ]
 
@@ -147,6 +149,7 @@ dependencies = [
 requires-dist = [
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "polars", specifier = ">=1.19.0" },
+    { name = "polars-capitol", specifier = ">=0.1.0" },
     { name = "streamlit", specifier = ">=1.41.1" },
 ]
 
@@ -399,6 +402,19 @@ wheels = [
 ]
 
 [[package]]
+name = "polars-capitol"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/a6/76/90a5a2ca0bf91de031e01807a5bc7b70af8779ea778af9b364764a2d224e/polars_capitol-0.1.0.tar.gz", hash = "sha256:b887a38013033ec5fda8c7d94f6320d7e0cbac3006cac0756d05a6079aaeefd7", size = 13701 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/54/b9/fccc43ba66857e16a47eb9b0fbfbea809acb2053e8cd151c53e350b9c892/polars_capitol-0.1.0-cp38-abi3-macosx_10_12_x86_64.whl", hash = "sha256:ef82d4ab937211093c870e32e6e364068768f8a5f0ef4cf6845aea7ff45559e2", size = 3938783 },
+    { url = "https://files.pythonhosted.org/packages/d2/d8/c05360f29f0afd4f0aa071e984cacc972aba1a6efd47563fa809f96c0e8d/polars_capitol-0.1.0-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:0c61152e62e37e50f62f99ae41cc78526f6356f981bdd59632b101dc3728b4d7", size = 3615828 },
+    { url = "https://files.pythonhosted.org/packages/0e/16/32b38b11aa3fb5d68af1c634866232a2b9452e4e232057da22ae76b11ed5/polars_capitol-0.1.0-cp38-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:8300a8cad944c2d6fc09a29627f9de104ab6128ce3853a3bf35e8acc669f4ba8", size = 4006716 },
+    { url = "https://files.pythonhosted.org/packages/9b/0a/2ad9ee713e7595d27dc1ebb640f2470a7fd2fb93490cf8ebc9e012f2c809/polars_capitol-0.1.0-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1278b829a6fb4a216d12225bd154c8d67ebf23b711bf0aad8eb06266e79e63a6", size = 4475445 },
+    { url = "https://files.pythonhosted.org/packages/20/fe/7ea5fd304d920c4d8cab1e731a57bbbc7e3092f09aceb19710510e506222/polars_capitol-0.1.0-cp38-abi3-win_amd64.whl", hash = "sha256:db99d6dd5859f4398120649a61c3f4230548bd89cd04f424ff892ccd0a4e4308", size = 3722834 },
+]
+
+[[package]]
 name = "protobuf"
 version = "5.29.2"
 source = { registry = "https://pypi.org/simple" }
@@ -601,7 +617,7 @@ dependencies = [
     { name = "toml" },
     { name = "tornado" },
     { name = "typing-extensions" },
-    { name = "watchdog", marker = "platform_system != 'Darwin'" },
+    { name = "watchdog", marker = "sys_platform != 'darwin'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/78/33/14b5ac0369ecf0af675911e5e84b934e6fcc2cec850857d2390eb373b0a6/streamlit-1.41.1.tar.gz", hash = "sha256:6626d32b098ba1458b71eebdd634c62af2dd876380e59c4b6a1e828a39d62d69", size = 8712473 }
 wheels = [
