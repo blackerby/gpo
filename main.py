@@ -28,7 +28,7 @@ COLLECTIONS = {
     "Public Laws": "plaw",
     "Committee Reports": "crpt",
     "Committee Prints": "cprt",
-    "Committee Hearings": "chrg",
+    "Congressional Hearings": "chrg",
 }
 API_KEY = os.environ.get("GPO_API_KEY", "DEMO_KEY")
 HEADERS = {"X-Api-Key": API_KEY}
