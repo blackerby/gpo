@@ -28,6 +28,7 @@ COLLECTIONS = {
     "Public Laws": "plaw",
     "Committee Reports": "crpt",
     "Committee Prints": "cprt",
+    "Committee Hearings": "chrg",
 }
 API_KEY = os.environ.get("GPO_API_KEY", "DEMO_KEY")
 HEADERS = {"X-Api-Key": API_KEY}
@@ -112,7 +113,7 @@ if len(df) > 0:
     )
 st.subheader(f"Total: {len(df)}")
 
-if collection in ["cprt", "crpt"]:
+if collection in ["cprt", "crpt", "chrg"]:
     if "docClass" in df.columns:
         house = len(df.filter(pl.col("docClass").str.starts_with("H")))
         senate = len(df.filter(pl.col("docClass").str.starts_with("S")))
