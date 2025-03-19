@@ -70,7 +70,7 @@ if len(df) > 0:
         pl.concat_str([pl.col("packageLink"), pl.lit("?api_key=DEMO_KEY")])
     )
 
-    if collection == "crpt":
+    if collection in ["bills", "cprt", "crpt"]:
         s = pl.col("packageId").str.split(by="-").list.get(1, null_on_oob=True)
         expr = cap.cdg_url(s)
         df = df.with_columns(cdg_url=expr).select(
@@ -85,22 +85,9 @@ if len(df) > 0:
             ]
         )
 
-    if collection == "bills":
-        s = pl.col("packageId").str.split(by="-").list.get(1, null_on_oob=True)
-        url = cap.cdg_url(s)
-        version = cap.version(s)
-        df = df.with_columns(cdg_url=url, version=version).select(
-            [
-                "packageId",
-                "congress",
-                "docClass",
-                "lastModified",
-                "title",
-                "packageLink",
-                "cdg_url",
-                "version",
-            ]
-        )
+        if collection == "bills":
+            version = cap.version(s)
+            df = df.with_columns(version=version)
 
     st.dataframe(
         df,
