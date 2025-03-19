@@ -117,14 +117,14 @@ if collection in ["cprt", "crpt", "chrg"]:
     if "docClass" in df.columns:
         house = len(df.filter(pl.col("docClass").str.starts_with("H")))
         senate = len(df.filter(pl.col("docClass").str.starts_with("S")))
-        executive = len(df.filter(pl.col("docClass").str.starts_with("E")))
+        joint = len(df.filter(pl.col("docClass").str.starts_with("J")))
 
         st.markdown(f"""
             |Type|Count|
             |---------|-----------|
             |House    |{house}    |
             |Senate   |{senate}   |
-            |Executive|{executive}|
+            |Joint    |{joint}|
         """)
 
 if collection == "bills":
