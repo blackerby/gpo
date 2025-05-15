@@ -10,15 +10,6 @@ import streamlit as st
 BASE_URL = "https://api.govinfo.gov/collections"
 PAGE_SIZE = 1000
 OFFSET_MARK = "*"
-YESTERDAY = (
-    (
-        datetime.combine(
-            date.today() - timedelta(days=2), datetime.min.time(), tzinfo=timezone.utc
-        )
-    )
-    .isoformat(timespec="seconds")
-    .replace("+00:00", "Z")
-)
 TODAY = date.today()
 YESTERDAY = TODAY - timedelta(days=1)
 TOMORROW = TODAY + timedelta(days=1)
@@ -61,7 +52,13 @@ end_timestamp = timestamp_from_date(end_date)  # type: ignore
 url = f"{BASE_URL}/{collection}/{start_timestamp}/{end_timestamp}?congress={congress}&pageSize={PAGE_SIZE}&offsetMark={OFFSET_MARK}"
 response = httpx.get(url, headers=HEADERS)
 data = response.json()
+
 packages = data["packages"]
+
+while next_page := data["nextPage"]:
+    response = httpx.get(next_page, headers=HEADERS)
+    data = response.json()
+    packages.extend(data["packages"])
 
 df = pl.DataFrame(packages)
 st.header(collection_selection)
