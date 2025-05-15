@@ -50,16 +50,24 @@ end_date = st.date_input("End date", TOMORROW, format="YYYY-MM-DD")
 end_timestamp = timestamp_from_date(end_date)  # type: ignore
 
 url = f"{BASE_URL}/{collection}/{start_timestamp}/{end_timestamp}?congress={congress}&pageSize={PAGE_SIZE}&offsetMark={OFFSET_MARK}"
-response = httpx.get(url, headers=HEADERS)
-data = response.json()
 
-packages = data["packages"]
 
-while next_page := data["nextPage"]:
-    response = httpx.get(next_page, headers=HEADERS)
+@st.cache_data
+def get_data(url):
+    response = httpx.get(url, headers=HEADERS)
     data = response.json()
-    packages.extend(data["packages"])
 
+    packages = data["packages"]
+
+    while next_page := data["nextPage"]:
+        response = httpx.get(next_page, headers=HEADERS)
+        data = response.json()
+        packages.extend(data["packages"])
+
+    return packages
+
+
+packages = get_data(url)
 df = pl.DataFrame(packages)
 st.header(collection_selection)
 if len(df) > 0:
