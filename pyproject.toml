@@ -3,6 +3,7 @@ name = "gpo"
 version = "0.1.0"
 requires-python = ">=3.13"
 dependencies = [
+    "govinfo>=0.1.1",
     "httpx>=0.28.1",
     "polars>=1.19.0",
     "polars-capitol>=0.1.2",

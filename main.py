@@ -1,15 +1,13 @@
-from datetime import date, datetime, timedelta, timezone
 import os
+from datetime import date, datetime, timedelta, timezone
 
+import httpx
 import polars as pl
 import polars_capitol as cap
-import httpx
 import streamlit as st
+from govinfo import Govinfo
 
-
-BASE_URL = "https://api.govinfo.gov/collections"
 PAGE_SIZE = 1000
-OFFSET_MARK = "*"
 TODAY = date.today()
 YESTERDAY = TODAY - timedelta(days=1)
 TOMORROW = TODAY + timedelta(days=1)
@@ -49,17 +47,18 @@ start_timestamp = timestamp_from_date(start_date)  # type: ignore
 end_date = st.date_input("End date", TOMORROW, format="YYYY-MM-DD")
 end_timestamp = timestamp_from_date(end_date)  # type: ignore
 
-url = f"{BASE_URL}/{collection}/{start_timestamp}/{end_timestamp}?congress={congress}&pageSize={PAGE_SIZE}&offsetMark={OFFSET_MARK}"
+govinfo = Govinfo(api_key=API_KEY)
 
 
 @st.cache_data
-def get_data(url):
-    response = httpx.get(url, headers=HEADERS)
-    data = response.json()
+def get_data(collection):
+    data = govinfo.collections(
+        collection, start_timestamp, end_timestamp, congress=congress, page_size=1000
+    )
 
     packages = data["packages"]
 
-    while next_page := data["nextPage"]:
+    while next_page := data["next_page"]:
         response = httpx.get(next_page, headers=HEADERS)
         data = response.json()
         packages.extend(data["packages"])
@@ -67,25 +66,25 @@ def get_data(url):
     return packages
 
 
-packages = get_data(url)
+packages = get_data(collection)
 df = pl.DataFrame(packages)
 st.header(collection_selection)
 if len(df) > 0:
     df = df.with_columns(
-        pl.concat_str([pl.col("packageLink"), pl.lit("?api_key=DEMO_KEY")])
+        pl.concat_str([pl.col("package_link"), pl.lit("?api_key=DEMO_KEY")])
     )
 
     if collection in ["bills", "cprt", "crpt"]:
-        s = pl.col("packageId").str.split(by="-").list.get(1, null_on_oob=True)
+        s = pl.col("package_id").str.split(by="-").list.get(1, null_on_oob=True)
         expr = cap.cdg_url(s)
         df = df.with_columns(cdg_url=expr).select(
             [
-                "packageId",
+                "package_id",
                 "congress",
-                "docClass",
-                "lastModified",
+                "doc_class",
+                "last_modified",
                 "title",
-                "packageLink",
+                "package_link",
                 "cdg_url",
             ]
         )
@@ -99,17 +98,17 @@ if len(df) > 0:
         hide_index=True,
         use_container_width=True,
         column_config={
-            "packageLink": st.column_config.LinkColumn(),
+            "package_link": st.column_config.LinkColumn(),
             "cdg_url": st.column_config.LinkColumn(),
         },
     )
 st.subheader(f"Total: {len(df)}")
 
 if collection in ["cprt", "crpt", "chrg"]:
-    if "docClass" in df.columns:
-        house = len(df.filter(pl.col("docClass").str.starts_with("H")))
-        senate = len(df.filter(pl.col("docClass").str.starts_with("S")))
-        joint = len(df.filter(pl.col("docClass").str.starts_with("J")))
+    if "doc_class" in df.columns:
+        house = len(df.filter(pl.col("doc_class").str.starts_with("H")))
+        senate = len(df.filter(pl.col("doc_class").str.starts_with("S")))
+        joint = len(df.filter(pl.col("doc_class").str.starts_with("J")))
 
         st.markdown(f"""
             |Type|Count|
