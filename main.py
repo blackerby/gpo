@@ -33,7 +33,7 @@ govinfo = GovInfo(api_key=API_KEY)
 
 @st.cache_data
 def get_dataframe(collection, start_timestamp, end_timestamp, congress, page_size):
-    data = govinfo.collections(
+    data = govinfo.collection(
         collection,
         start_timestamp,
         end_timestamp,

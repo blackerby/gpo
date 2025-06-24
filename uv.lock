@@ -145,16 +145,16 @@ wheels = [
 
 [[package]]
 name = "govinfo"
-version = "0.2.1"
+version = "0.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
     { name = "pydantic" },
     { name = "pytest" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ee/bf/3f6723944ab94ff1913ebf673ed04a3b62bb80404816ea24d6ad455efdd1/govinfo-0.2.1.tar.gz", hash = "sha256:5e18e2aaa7e64d32a5a29b47ef789d8562bce2d091730b20e8566559000b3e1e", size = 9504 }
+sdist = { url = "https://files.pythonhosted.org/packages/fb/06/cfc0a7fd62e32e98edc1252bc70458c079eb70cfe29e6a11faebcdf58eae/govinfo-0.3.0.tar.gz", hash = "sha256:a35ebdcd40d869c517b12f032f4daf746a2809152725b266e33b17da9a4ca392", size = 14315 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6f/d3/030997c37b8d0b9e6aa215a289869bdd260ef603643403d9af67f056f09a/govinfo-0.2.1-py3-none-any.whl", hash = "sha256:221f6fcecc9b9fc30131b1fe3ef3a3d61aaedb505564d31033f472d0b712e884", size = 3980 },
+    { url = "https://files.pythonhosted.org/packages/d9/12/90131e841423d6636a43087d378e39a6ccfa444df7dfe32d6892c74c91cf/govinfo-0.3.0-py3-none-any.whl", hash = "sha256:5d73514ae3e597fb2b8f411c34165b78f16baf2390874e203ed3a2ca513d6b65", size = 4454 },
 ]
 
 [[package]]
@@ -170,7 +170,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "govinfo", specifier = ">=0.2.1" },
+    { name = "govinfo", specifier = ">=0.3.0" },
     { name = "polars", specifier = ">=1.19.0" },
     { name = "polars-capitol", specifier = ">=0.1.2" },
     { name = "streamlit", specifier = ">=1.41.1" },
