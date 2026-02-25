@@ -1,6 +1,6 @@
-import polars as pl
-import polars_capitol as cap
 import streamlit as st
+import polars as pl
+from pycapitol import url_for, version
 from govinfo import GovInfo
 
 from constants import (
@@ -56,7 +56,7 @@ if len(df) > 0:
 
     if collection in ["bills", "cprt", "crpt"]:
         s = pl.col("package_id").str.split(by="-").list.get(1, null_on_oob=True)
-        expr = cap.cdg_url(s)
+        expr = s.map_elements(url_for, return_dtype=pl.String)
         df = df.with_columns(cdg_url=expr).select(
             [
                 "package_id",
@@ -70,7 +70,7 @@ if len(df) > 0:
         )
 
         if collection == "bills":
-            version = cap.version(s)
+            version = s.map_elements(version, return_dtype=pl.String)
             df = df.with_columns(version=version)
 
     st.dataframe(
