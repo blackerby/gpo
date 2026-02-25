@@ -172,7 +172,7 @@ dependencies = [
 requires-dist = [
     { name = "govinfo", specifier = ">=0.3.0" },
     { name = "polars", specifier = ">=1.19.0" },
-    { name = "pycapitol", specifier = ">=0.2.1" },
+    { name = "pycapitol", specifier = ">=0.2.2" },
     { name = "streamlit", specifier = ">=1.41.1" },
 ]
 
@@ -479,10 +479,10 @@ wheels = [
 
 [[package]]
 name = "pycapitol"
-version = "0.2.1"
+version = "0.2.2"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/86/2f/d7a9471103e03e230e7afad8283f6fefb1d6f8d7bb9fdf60240ed44e1dd7/pycapitol-0.2.1-cp313-abi3-manylinux_2_34_x86_64.whl", hash = "sha256:f39b651a26edd4fdaa207e01f27f98a28f11d0bf1d007bcbeec1c165b0fd4e3b", size = 260565, upload-time = "2026-02-25T16:30:08.679Z" },
+    { url = "https://files.pythonhosted.org/packages/38/bc/d18b7d35958efdb665a0f974282f36553e665a708ce177a2ddbee5d31231/pycapitol-0.2.2-cp313-abi3-manylinux_2_34_x86_64.whl", hash = "sha256:8dd031c864506eb915c3e88c8c8fff8670e9e30ef148b973a7739547e0b20d10", size = 260564, upload-time = "2026-02-25T17:34:08.424Z" },
 ]
 
 [[package]]
